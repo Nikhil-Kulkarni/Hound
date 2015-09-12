@@ -10,11 +10,33 @@ import UIKit
 import CoreLocation
 import SwiftyJSON
 
-class CreateItemViewController: UIViewController {
+class CreateItemViewController: UIViewController, UITextFieldDelegate {
+    
+    @IBOutlet var titleField: UITextField!
+    @IBOutlet var descriptionField: UITextField!
+    @IBOutlet var contactField: UITextField!
+    @IBOutlet var sendToShuyangButton: UIButton!
+    var location : CLLocation?
     
     override func viewDidLoad() {
         //TODO: Add lost item
 //        addItem("4048600194", itemName: "Basketball", itemDescription: "NCAA Wilson basketball", contact: "404-860-0194", location: CLLocationCoordinate2DMake(37.3, -120.0))
+    
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        self.navigationController!.navigationBar.titleTextAttributes = titleDict as? [String : AnyObject]
+        
+        self.sendToShuyangButton.layer.shadowColor = UIColor.grayColor().CGColor
+        self.sendToShuyangButton.layer.shadowOffset = CGSizeMake(0, 1.0)
+        self.sendToShuyangButton.layer.shadowOpacity = 1.0
+        self.sendToShuyangButton.layer.shadowRadius = 8.0
+        self.sendToShuyangButton.layer.cornerRadius = 5.0
+        
+        titleField.delegate = self
+        descriptionField.delegate = self
+        contactField.delegate = self
+    }
+    @IBAction func sendToShuyang(sender: AnyObject) {
+        addItem("1234567890", itemName: titleField.text!, itemDescription: descriptionField.text!, contact: contactField.text!, location: self.location!.coordinate)
     }
     
     func addItem(phone: String, itemName: String, itemDescription: String, contact: String, location: CLLocationCoordinate2D) {
@@ -33,6 +55,25 @@ class CreateItemViewController: UIViewController {
             print(parsedJSON)
         }
         task.resume()
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        titleField.endEditing(true)
+        descriptionField.endEditing(true)
+        contactField.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        print("Hopefully this prints")
+        if (textField == titleField) {
+            descriptionField.becomeFirstResponder()
+        } else if (textField == descriptionField) {
+            contactField.becomeFirstResponder()
+        } else {
+            contactField.resignFirstResponder()
+        }
+        
+        return true
     }
 
 }

@@ -20,6 +20,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet var postItemButton: UIButton!
     @IBOutlet var searchBar: UISearchBar!
     var searchBarIsActive = false
+    var location: CLLocation?
     
     let locationManager = CLLocationManager()
     var foundLocation = false
@@ -98,6 +99,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if !foundLocation {
             let location = locations.first
+            self.location = location
             mapView.setCamera(MKMapCamera(lookingAtCenterCoordinate: (location?.coordinate)!, fromEyeCoordinate: (location?.coordinate)!, eyeAltitude: 5000.0), animated: false)
             foundLocation = true
         }
@@ -120,6 +122,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             self.postItemButton.transform = CGAffineTransformMakeTranslation(0, 120)
             }) { (bool) -> Void in
         }
+        
+    }
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
         
     }
     
@@ -214,6 +220,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         task.resume()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "confirm" {
+            let dc = segue.destinationViewController as! CreateItemViewController
+            dc.location = self.location
+        }
+        
+    }
+    
+    
+    
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         let pinView = MKAnnotationView()
@@ -221,5 +237,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return pinView
     }
     
+    @IBAction func recenter(sender: AnyObject) {
+        self.mapView.setCamera(MKMapCamera(lookingAtCenterCoordinate: (self.location?.coordinate)!, fromEyeCoordinate: (self.location?.coordinate)!, eyeAltitude: 5000.0), animated: true)
+    }
 }
 
