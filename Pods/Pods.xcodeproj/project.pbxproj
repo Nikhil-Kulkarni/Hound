@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3F601A3F7A460691A8BD393B1E34B483 /* PBXContainerItemProxy */ = {
+		D488737705171707C745E327A9CA47DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
@@ -198,7 +198,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				2B22BDADA3C740F10A9C5CDBF03EEBBC /* PBXTargetDependency */,
+				2565410A2EFCC7E67BA90150B5D2BB49 /* PBXTargetDependency */,
 			);
 			name = "Pods-Trayl";
 			productName = "Pods-Trayl";
@@ -270,11 +270,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2B22BDADA3C740F10A9C5CDBF03EEBBC /* PBXTargetDependency */ = {
+		2565410A2EFCC7E67BA90150B5D2BB49 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SwiftyJSON;
 			target = B9A04D3C9B208813656510FDA8ADAE02 /* SwiftyJSON */;
-			targetProxy = 3F601A3F7A460691A8BD393B1E34B483 /* PBXContainerItemProxy */;
+			targetProxy = D488737705171707C745E327A9CA47DC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

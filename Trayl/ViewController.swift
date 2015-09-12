@@ -26,8 +26,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var postMode = false
     var confirmPresent = false
     
+    var droppedPin: MKAnnotation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
         self.postItemButton.layer.shadowColor = UIColor.grayColor().CGColor
         self.postItemButton.layer.shadowOffset = CGSizeMake(0, 1.0)
@@ -125,6 +128,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         postMode = false
         if (confirmPresent) {
             confirmPresent = false
+            self.mapView.removeAnnotation(droppedPin!)
             UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.TransitionNone, animations: { () -> Void in
                 self.cancelButton.transform = CGAffineTransformMakeTranslation(0, 120)
                 self.confirmButton.transform = CGAffineTransformMakeTranslation(0, 150)
@@ -142,6 +146,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
 
+
+    
     @IBAction func addPin(recognizer: UITapGestureRecognizer) {
         if (postMode) {
             if !confirmPresent {
@@ -151,11 +157,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     }) { (bool) -> Void in
                 }
             }
+            
             let point = recognizer.locationInView(self.mapView)
             let location = mapView.convertPoint(point, toCoordinateFromView: self.view)
+            let annotation = PinImageAnnotationView(myCoordinate: location, myPinImage: UIImage(named: "neutral_grey_pin")!)
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = location
+            
+            if (droppedPin != nil) {
+                self.mapView.removeAnnotation(droppedPin!)
+            }
+            droppedPin = annotation
             self.mapView.addAnnotation(annotation)
         }
         
@@ -201,6 +212,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
         task.resume()
+    }
+    
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        let pinView = MKAnnotationView()
+        pinView.image = UIImage(named: "neutral_grey_pin")
+        return pinView
     }
     
 }
