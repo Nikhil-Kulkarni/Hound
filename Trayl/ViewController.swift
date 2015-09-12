@@ -21,6 +21,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet var searchBar: UISearchBar!
     var searchBarIsActive = false
     var location: CLLocation?
+    var lostItem: Bool?
+    var itemLocation: CLLocationCoordinate2D?
+    var index: Int?
     
     let locationManager = CLLocationManager()
     var foundLocation = false
@@ -28,6 +31,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var confirmPresent = false
     
     var droppedPin: MKAnnotation?
+    var annotations: [PinImageAnnotationView]?
+    var item:PinImageAnnotationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,8 +171,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             let point = recognizer.locationInView(self.mapView)
             let location = mapView.convertPoint(point, toCoordinateFromView: self.view)
-            let annotation = PinImageAnnotationView(myCoordinate: location, myPinImage: UIImage(named: "neutral_grey_pin")!)
-            
+            self.itemLocation = location
+//            let annotation = PinImageAnnotationView(myCoordinate: location, myPinImage: UIImage(named: "neutral_grey_pin")!)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location
             
             if (droppedPin != nil) {
                 self.mapView.removeAnnotation(droppedPin!)
@@ -209,11 +216,25 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 let title = arr![i].dictionaryValue["title"]?.stringValue
                 let lat = arr![i].dictionaryValue["location"]?.dictionaryValue["lat"]?.doubleValue
                 let long = arr![i].dictionaryValue["location"]?.dictionaryValue["long"]?.doubleValue
+                let lost = arr![i].dictionaryValue["lost"]?.boolValue
+//                print(lost)
+                let contact = arr![i].dictionaryValue["contact"]?.stringValue
+                var index = 0
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     let annotation = MKPointAnnotation()
+                    let pinAnnotation = PinImageAnnotationView(myCoordinate: CLLocationCoordinate2DMake(lat!, long!), title: title!, lost: lost!, contact: contact!)
+                    pinAnnotation.index = index
+                    
                     annotation.coordinate = CLLocationCoordinate2DMake(lat!, long!)
                     annotation.title = title
+                    annotation.subtitle = contact
+                    self.lostItem = lost
+                    self.item = pinAnnotation
                     self.mapView.addAnnotation(annotation)
+                    
+                    self.mapView(self.mapView, viewForAnnotation: annotation)
+                    self.annotations?.append(pinAnnotation)
+                    index++
                 })
             }
         }
@@ -222,20 +243,35 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "confirm" {
-            let dc = segue.destinationViewController as! CreateItemViewController
-            dc.location = self.location
+            let destinationNavigationController = segue.destinationViewController as! UINavigationController
+            let targetController = destinationNavigationController.topViewController as! CreateItemViewController
+            targetController.location = CLLocation(latitude: (self.itemLocation?.latitude)!, longitude: (self.itemLocation?.longitude)!)
         }
-        
+//        if segue.identifier == "detail" {
+//            let destinationNavigationController = segue.destinationViewController as! UINavigationController
+//            let targetController = destinationNavigationController.topViewController as! DetailController
+//            targetController.pin = annotations?[self.index!]
+//        }
     }
-    
-    
-    
-    
+
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        let pinView = MKAnnotationView()
-        pinView.image = UIImage(named: "neutral_grey_pin")
+        let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "view")
+        pinView.canShowCallout = true
+        print(self.item?.lost)
+        if (self.item != nil && self.item?.lost! == true) {
+            pinView.pinTintColor = UIColor.redColor()
+        } else if self.item?.lost! == false {
+            pinView.pinTintColor = UIColor.greenColor()
+        }
+        let btn = UIButton(type: UIButtonType.DetailDisclosure)
+        pinView.rightCalloutAccessoryView = btn
         return pinView
     }
+//    
+//    func reloadMap() {
+//        self.mapView.setRegion(MKCoordinateRegion(center: (self.location?.coordinate)!, span: MKCoordinateSpan.init(latitudeDelta: 2, longitudeDelta: 2)), animated: false)
+//
+//    }
     
     @IBAction func recenter(sender: AnyObject) {
         self.mapView.setCamera(MKMapCamera(lookingAtCenterCoordinate: (self.location?.coordinate)!, fromEyeCoordinate: (self.location?.coordinate)!, eyeAltitude: 5000.0), animated: true)

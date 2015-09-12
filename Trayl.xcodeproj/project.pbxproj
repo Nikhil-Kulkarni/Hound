@@ -10,6 +10,7 @@
 		11310B9C1BA3BEE0008D2551 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11310B9B1BA3BEE0008D2551 /* MapKit.framework */; };
 		114D32511BA3C84A00731C9D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114D32501BA3C84A00731C9D /* CoreLocation.framework */; };
 		11D8DAAB1BA47E840015E9FE /* CreateItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D8DAAA1BA47E840015E9FE /* CreateItemViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		11DEA2B61BA4CC06001C3173 /* DetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DEA2B51BA4CC06001C3173 /* DetailController.swift */; settings = {ASSET_TAGS = (); }; };
 		8D9563158BD8A11AE652A56E /* Pods_Trayl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 244A377822367EE5146B344C /* Pods_Trayl.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B61D62DB1BA4909E0043C147 /* PinImageAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61D62DA1BA4909E0043C147 /* PinImageAnnotationView.swift */; settings = {ASSET_TAGS = (); }; };
 		B636BEC61BA3B9AF002E4648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B636BEC51BA3B9AF002E4648 /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 		11310B9B1BA3BEE0008D2551 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		114D32501BA3C84A00731C9D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		11D8DAAA1BA47E840015E9FE /* CreateItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateItemViewController.swift; sourceTree = "<group>"; };
+		11DEA2B51BA4CC06001C3173 /* DetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailController.swift; sourceTree = "<group>"; };
 		244A377822367EE5146B344C /* Pods_Trayl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Trayl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9BBF349D15AC6590228812 /* Pods-Trayl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trayl.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Trayl/Pods-Trayl.debug.xcconfig"; sourceTree = "<group>"; };
 		B61D62DA1BA4909E0043C147 /* PinImageAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinImageAnnotationView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				B636BEC51BA3B9AF002E4648 /* AppDelegate.swift */,
 				B61D62DA1BA4909E0043C147 /* PinImageAnnotationView.swift */,
 				B636BEC71BA3B9AF002E4648 /* ViewController.swift */,
+				11DEA2B51BA4CC06001C3173 /* DetailController.swift */,
 				11D8DAAA1BA47E840015E9FE /* CreateItemViewController.swift */,
 				B636BEC91BA3B9AF002E4648 /* Main.storyboard */,
 				B636BECC1BA3B9AF002E4648 /* Assets.xcassets */,
@@ -347,6 +350,7 @@
 				B636BEC81BA3B9AF002E4648 /* ViewController.swift in Sources */,
 				11D8DAAB1BA47E840015E9FE /* CreateItemViewController.swift in Sources */,
 				B636BEC61BA3B9AF002E4648 /* AppDelegate.swift in Sources */,
+				11DEA2B61BA4CC06001C3173 /* DetailController.swift in Sources */,
 				B61D62DB1BA4909E0043C147 /* PinImageAnnotationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

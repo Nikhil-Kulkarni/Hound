@@ -12,11 +12,13 @@ import SwiftyJSON
 
 class CreateItemViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet var segmentedControl: UISegmentedControl!
     @IBOutlet var titleField: UITextField!
     @IBOutlet var descriptionField: UITextField!
     @IBOutlet var contactField: UITextField!
     @IBOutlet var sendToShuyangButton: UIButton!
     var location : CLLocation?
+    var lost: Bool = true
     
     override func viewDidLoad() {
         //TODO: Add lost item
@@ -31,12 +33,30 @@ class CreateItemViewController: UIViewController, UITextFieldDelegate {
         self.sendToShuyangButton.layer.shadowRadius = 8.0
         self.sendToShuyangButton.layer.cornerRadius = 5.0
         
+        print(self.location)
         titleField.delegate = self
         descriptionField.delegate = self
         contactField.delegate = self
     }
+    
     @IBAction func sendToShuyang(sender: AnyObject) {
-        addItem("1234567890", itemName: titleField.text!, itemDescription: descriptionField.text!, contact: contactField.text!, location: self.location!.coordinate)
+        if titleField.text == "" || descriptionField.text == "" || contactField.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Fill out all fields", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            addItem("1234567890", itemName: titleField.text!, itemDescription: descriptionField.text!, contact: contactField.text!, location: self.location!.coordinate)
+            
+        }
+    }
+    
+    @IBAction func segmentation(sender: AnyObject) {
+        let segment = sender as! UISegmentedControl
+        if segment.selectedSegmentIndex == 0 {
+            lost = true
+        } else {
+            lost = false
+        }
     }
     
     func addItem(phone: String, itemName: String, itemDescription: String, contact: String, location: CLLocationCoordinate2D) {
@@ -45,7 +65,7 @@ class CreateItemViewController: UIViewController, UITextFieldDelegate {
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        request.HTTPBody = "{\"phone\": \"\(phone)\" \n,\"data\": {\n \"\(title)\": \"Basketball\",\n \"description\": \"\(description)\",\n\"contact\": \"434-260-1893\",\n\"location\": {\n\"lat\": \"\(location.latitude.description)\",\n\"long\": \"\(location.longitude)\"}}}".dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = "{\"phone\": \"\(phone)\" \n,\"data\": {\n \"title\": \"\(itemName)\",\n \"description\": \"\(description)\",\n\"contact\": \"434-260-1893\", \n \"lost\": \(self.lost),\n\"location\": {\n\"lat\": \(location.latitude.description),\n\"long\": \(location.longitude)}}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let session = NSURLSession.sharedSession()
         

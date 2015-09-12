@@ -10,14 +10,18 @@ import Foundation
 import MapKit
 import CoreLocation
 
-class PinImageAnnotationView: NSObject, MKAnnotation {
+class PinImageAnnotationView: NSObject {
     var coordinate: CLLocationCoordinate2D
-    var pinImage: UIImage
+    var title: String?
+    var lost:Bool?
+    var contact:String?
+    var index:Int?
     
-    init(myCoordinate: CLLocationCoordinate2D, myPinImage: UIImage) {
+    init(myCoordinate: CLLocationCoordinate2D, title: String, lost: Bool, contact: String) {
         self.coordinate = myCoordinate
-        self.pinImage = myPinImage
-        
+        self.title = title
+        self.lost = lost
+        self.contact = contact
     }
     
     
